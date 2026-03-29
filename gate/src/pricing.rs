@@ -7,55 +7,106 @@ pub struct ModelPrice {
 pub fn model_price(model: &str) -> Option<ModelPrice> {
     let m = model.to_lowercase();
     if m.contains("claude-3-5-sonnet") || m.contains("claude-3.5-sonnet") {
-        return Some(ModelPrice { input_per_1m: 3.00, output_per_1m: 15.00 });
+        return Some(ModelPrice {
+            input_per_1m: 3.00,
+            output_per_1m: 15.00,
+        });
     }
     if m.contains("claude-3-5-haiku") || m.contains("claude-3.5-haiku") {
-        return Some(ModelPrice { input_per_1m: 0.80, output_per_1m: 4.00 });
+        return Some(ModelPrice {
+            input_per_1m: 0.80,
+            output_per_1m: 4.00,
+        });
     }
     if m.contains("claude-opus-4") || m.contains("claude-4-opus") {
-        return Some(ModelPrice { input_per_1m: 15.00, output_per_1m: 75.00 });
+        return Some(ModelPrice {
+            input_per_1m: 15.00,
+            output_per_1m: 75.00,
+        });
     }
     if m.contains("claude-3-opus") {
-        return Some(ModelPrice { input_per_1m: 15.00, output_per_1m: 75.00 });
+        return Some(ModelPrice {
+            input_per_1m: 15.00,
+            output_per_1m: 75.00,
+        });
     }
     if m.contains("claude-3-sonnet") {
-        return Some(ModelPrice { input_per_1m: 3.00, output_per_1m: 15.00 });
+        return Some(ModelPrice {
+            input_per_1m: 3.00,
+            output_per_1m: 15.00,
+        });
     }
     if m.contains("claude-3-haiku") {
-        return Some(ModelPrice { input_per_1m: 0.25, output_per_1m: 1.25 });
+        return Some(ModelPrice {
+            input_per_1m: 0.25,
+            output_per_1m: 1.25,
+        });
     }
     if m.starts_with("claude") {
-        return Some(ModelPrice { input_per_1m: 3.00, output_per_1m: 15.00 });
+        return Some(ModelPrice {
+            input_per_1m: 3.00,
+            output_per_1m: 15.00,
+        });
     }
     if m.contains("gpt-4o-mini") {
-        return Some(ModelPrice { input_per_1m: 0.15, output_per_1m: 0.60 });
+        return Some(ModelPrice {
+            input_per_1m: 0.15,
+            output_per_1m: 0.60,
+        });
     }
     if m.contains("gpt-4o") {
-        return Some(ModelPrice { input_per_1m: 2.50, output_per_1m: 10.00 });
+        return Some(ModelPrice {
+            input_per_1m: 2.50,
+            output_per_1m: 10.00,
+        });
     }
     if m.contains("gpt-4-turbo") {
-        return Some(ModelPrice { input_per_1m: 10.00, output_per_1m: 30.00 });
+        return Some(ModelPrice {
+            input_per_1m: 10.00,
+            output_per_1m: 30.00,
+        });
     }
     if m.contains("gpt-4") {
-        return Some(ModelPrice { input_per_1m: 30.00, output_per_1m: 60.00 });
+        return Some(ModelPrice {
+            input_per_1m: 30.00,
+            output_per_1m: 60.00,
+        });
     }
     if m.contains("gpt-3.5") {
-        return Some(ModelPrice { input_per_1m: 0.50, output_per_1m: 1.50 });
+        return Some(ModelPrice {
+            input_per_1m: 0.50,
+            output_per_1m: 1.50,
+        });
     }
     if m.contains("o1-mini") {
-        return Some(ModelPrice { input_per_1m: 1.10, output_per_1m: 4.40 });
+        return Some(ModelPrice {
+            input_per_1m: 1.10,
+            output_per_1m: 4.40,
+        });
     }
     if m.contains("o1") {
-        return Some(ModelPrice { input_per_1m: 15.00, output_per_1m: 60.00 });
+        return Some(ModelPrice {
+            input_per_1m: 15.00,
+            output_per_1m: 60.00,
+        });
     }
     if m.contains("gemini-1.5-flash") || m.contains("gemini-flash") {
-        return Some(ModelPrice { input_per_1m: 0.075, output_per_1m: 0.30 });
+        return Some(ModelPrice {
+            input_per_1m: 0.075,
+            output_per_1m: 0.30,
+        });
     }
     if m.contains("gemini-1.5-pro") || m.contains("gemini-pro") {
-        return Some(ModelPrice { input_per_1m: 1.25, output_per_1m: 5.00 });
+        return Some(ModelPrice {
+            input_per_1m: 1.25,
+            output_per_1m: 5.00,
+        });
     }
     if m.contains("gemini-2.0-flash") {
-        return Some(ModelPrice { input_per_1m: 0.10, output_per_1m: 0.40 });
+        return Some(ModelPrice {
+            input_per_1m: 0.10,
+            output_per_1m: 0.40,
+        });
     }
     None
 }

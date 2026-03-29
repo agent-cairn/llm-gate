@@ -18,7 +18,11 @@ use std::sync::{Arc, Mutex};
 use tracing::{error, info, warn};
 
 #[derive(Parser)]
-#[command(name = "llm-gate", about = "LLM cost-control proxy and budget manager", version)]
+#[command(
+    name = "llm-gate",
+    about = "LLM cost-control proxy and budget manager",
+    version
+)]
 struct Cli {
     #[command(subcommand)]
     command: Commands,
@@ -256,8 +260,8 @@ async fn proxy_handler(
     }
 
     // Convert axum/http-1.x types to reqwest/http-0.2 compatible strings
-    let reqwest_method = reqwest::Method::from_bytes(method_str.as_bytes())
-        .unwrap_or(reqwest::Method::POST);
+    let reqwest_method =
+        reqwest::Method::from_bytes(method_str.as_bytes()).unwrap_or(reqwest::Method::POST);
 
     let mut req_builder = state.client.request(reqwest_method, &target_url);
     for (key, value) in &headers {
@@ -292,24 +296,23 @@ async fn proxy_handler(
 
     let axum_status = StatusCode::from_u16(status_u16).unwrap_or(StatusCode::INTERNAL_SERVER_ERROR);
 
-    let (input_tokens, output_tokens) =
-        serde_json::from_slice::<Value>(&resp_bytes)
-            .ok()
-            .and_then(|v| {
-                let u = v.get("usage")?;
-                let i = u
-                    .get("input_tokens")
-                    .or_else(|| u.get("prompt_tokens"))
-                    .and_then(|t| t.as_u64())
-                    .unwrap_or(0);
-                let o = u
-                    .get("output_tokens")
-                    .or_else(|| u.get("completion_tokens"))
-                    .and_then(|t| t.as_u64())
-                    .unwrap_or(0);
-                Some((i, o))
-            })
-            .unwrap_or((0, 0));
+    let (input_tokens, output_tokens) = serde_json::from_slice::<Value>(&resp_bytes)
+        .ok()
+        .and_then(|v| {
+            let u = v.get("usage")?;
+            let i = u
+                .get("input_tokens")
+                .or_else(|| u.get("prompt_tokens"))
+                .and_then(|t| t.as_u64())
+                .unwrap_or(0);
+            let o = u
+                .get("output_tokens")
+                .or_else(|| u.get("completion_tokens"))
+                .and_then(|t| t.as_u64())
+                .unwrap_or(0);
+            Some((i, o))
+        })
+        .unwrap_or((0, 0));
 
     let cost_usd = estimate_cost(&model, input_tokens, output_tokens).unwrap_or(0.0);
 
@@ -324,7 +327,12 @@ async fn proxy_handler(
     };
 
     let audit_status = if cost_usd > 0.0 {
-        match state.budget.lock().unwrap().record_spend(&state.label, cost_usd) {
+        match state
+            .budget
+            .lock()
+            .unwrap()
+            .record_spend(&state.label, cost_usd)
+        {
             Ok(SpendResult::Ok) => AuditStatus::Ok,
             Ok(SpendResult::Warned { spent, limit }) => {
                 warn!(
