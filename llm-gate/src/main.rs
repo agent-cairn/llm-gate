@@ -195,8 +195,8 @@ async fn main() -> Result<()> {
             let recent = &events[start..];
 
             println!(
-                "{:<25} {:<8} {:<30} {:>8} {:>8} {:>10} {}",
-                "Timestamp", "Status", "Model", "In Tok", "Out Tok", "Cost USD", "Label"
+                "{:<25} {:<8} {:<30} {:>8} {:>8} {:>10} Label",
+                "Timestamp", "Status", "Model", "In Tok", "Out Tok", "Cost USD"
             );
             println!("{}", "-".repeat(100));
             for e in recent {
@@ -240,21 +240,22 @@ async fn proxy_handler(
     {
         let store = state.budget.lock().unwrap();
         if let Some(b) = store.get(&state.label) {
-            if b.limit_usd > 0.0 && b.spent_usd >= b.limit_usd {
-                if matches!(b.action, BudgetAction::Block) {
-                    warn!("Budget pre-blocked: label={}", state.label);
-                    let body = serde_json::json!({
-                        "error": "budget_exceeded",
-                        "spent": b.spent_usd,
-                        "limit": b.limit_usd,
-                        "label": state.label
-                    });
-                    return Ok(Response::builder()
-                        .status(StatusCode::TOO_MANY_REQUESTS)
-                        .header("content-type", "application/json")
-                        .body(Body::from(body.to_string()))
-                        .unwrap());
-                }
+            if b.limit_usd > 0.0
+                && b.spent_usd >= b.limit_usd
+                && matches!(b.action, BudgetAction::Block)
+            {
+                warn!("Budget pre-blocked: label={}", state.label);
+                let body = serde_json::json!({
+                    "error": "budget_exceeded",
+                    "spent": b.spent_usd,
+                    "limit": b.limit_usd,
+                    "label": state.label
+                });
+                return Ok(Response::builder()
+                    .status(StatusCode::TOO_MANY_REQUESTS)
+                    .header("content-type", "application/json")
+                    .body(Body::from(body.to_string()))
+                    .unwrap());
             }
         }
     }
