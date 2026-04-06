@@ -56,11 +56,9 @@ cargo install --path llm-gate
 
 ## Quick Start
 
-```bash
-# Install
-cargo install --path llm-gate
+### Anthropic
 
-# Run proxy (blocks at $5.00, logs to audit.ndjson)
+```bash
 llm-gate proxy \
   --listen 127.0.0.1:7777 \
   --target https://api.anthropic.com \
@@ -68,9 +66,37 @@ llm-gate proxy \
   --budget 5.00 \
   --audit audit.ndjson
 
-# Point your agent at the proxy instead of the real API:
+# Point your agent at the proxy:
 # ANTHROPIC_BASE_URL=http://127.0.0.1:7777
+```
 
+### OpenAI
+
+```bash
+llm-gate proxy \
+  --listen 127.0.0.1:7778 \
+  --target https://api.openai.com \
+  --label openai-agent \
+  --budget 10.00 \
+  --audit openai-audit.ndjson
+
+# OPENAI_BASE_URL=http://127.0.0.1:7778/v1
+```
+
+### Google Gemini
+
+```bash
+llm-gate proxy \
+  --listen 127.0.0.1:7779 \
+  --target https://generativelanguage.googleapis.com \
+  --label gemini-agent \
+  --budget 3.00 \
+  --audit gemini-audit.ndjson
+```
+
+### Budget Management
+
+```bash
 # Check budget status
 llm-gate budget --config budgets.json status
 
@@ -104,11 +130,26 @@ llm-gate audit audit.ndjson --tail 50
 
 ### Supported models (auto-detected from request body)
 
-| Provider | Models |
-|----------|--------|
-| Anthropic | claude-3-5-sonnet, claude-3-5-haiku, claude-3-opus, claude-3-sonnet, claude-3-haiku, claude-opus-4 |
-| OpenAI | gpt-4o, gpt-4o-mini, gpt-4-turbo, gpt-4, gpt-3.5, o1, o1-mini |
-| Google | gemini-1.5-flash, gemini-1.5-pro, gemini-2.0-flash |
+| Provider | Models | Input/1M tokens | Output/1M tokens |
+|----------|--------|-----------------|------------------|
+| Anthropic | claude-sonnet-4, claude-4-sonnet, claude-3-5-sonnet | $3.00 | $15.00 |
+| Anthropic | claude-3-5-haiku | $0.80 | $4.00 |
+| Anthropic | claude-opus-4, claude-4-opus, claude-3-opus | $15.00 | $75.00 |
+| Anthropic | claude-3-haiku | $0.25 | $1.25 |
+| OpenAI | gpt-4o | $2.50 | $10.00 |
+| OpenAI | gpt-4o-mini | $0.15 | $0.60 |
+| OpenAI | gpt-4-turbo | $10.00 | $30.00 |
+| OpenAI | gpt-4 | $30.00 | $60.00 |
+| OpenAI | gpt-3.5 | $0.50 | $1.50 |
+| OpenAI | o3 | $10.00 | $40.00 |
+| OpenAI | o3-mini, o4-mini | $1.10 | $4.40 |
+| OpenAI | o1 | $15.00 | $60.00 |
+| OpenAI | o1-mini | $1.10 | $4.40 |
+| Google | gemini-2.5-flash | $0.15 | $0.60 |
+| Google | gemini-2.5-pro | $1.25 | $5.00 |
+| Google | gemini-2.0-flash | $0.10 | $0.40 |
+| Google | gemini-1.5-flash | $0.075 | $0.30 |
+| Google | gemini-1.5-pro | $1.25 | $5.00 |
 
 Unknown models pass through with `cost_usd: 0.0`.
 
@@ -135,6 +176,14 @@ llm-gate/
     └── src/
         └── main.rs
 ```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feat/my-feature`)
+3. Ensure `cargo fmt --all -- --check` and `cargo clippy --all-targets -- -D warnings` pass
+4. Add tests for new pricing models or budget logic
+5. Open a pull request
 
 ## Part of the Agent Infrastructure Toolkit
 
