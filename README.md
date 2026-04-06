@@ -45,6 +45,15 @@ AI agents make LLM calls autonomously. Without guardrails:
   Agent / Client
 ```
 
+## Installation
+
+```bash
+# From source
+git clone https://github.com/agent-cairn/llm-gate.git
+cd llm-gate
+cargo install --path llm-gate
+```
+
 ## Quick Start
 
 ```bash
@@ -126,6 +135,19 @@ llm-gate/
     └── src/
         └── main.rs
 ```
+
+## Part of the Agent Infrastructure Toolkit
+
+`llm-gate` is part of the **[Agent Infrastructure Toolkit](https://github.com/agent-cairn)** — a collection of purpose-built tools for building and operating AI agent systems.
+
+| Tool | Description |
+|------|-------------|
+| **[valkey-trace](https://github.com/agent-cairn/valkey-trace)** | Low-overhead Valkey/Redis command tracer with heatmap visualization |
+| **[llm-gate](https://github.com/agent-cairn/llm-gate)** | Transparent LLM proxy with budget enforcement and audit trails *(you are here)* |
+| **[criu-inspector](https://github.com/agent-cairn/criu-inspector)** | Inspect and diff CRIU process checkpoint images |
+| **[valkey-mcp](https://github.com/agent-cairn/valkey-mcp)** | MCP server exposing Valkey/Redis operations to AI agents |
+| **[valkey-lens](https://github.com/agent-cairn/valkey-lens)** | Real-time Valkey/Redis monitoring dashboard |
+| **[fork-radar](https://github.com/agent-cairn/fork-radar)** | Track GitHub forks and detect upstream drift |
 
 ## License
 
